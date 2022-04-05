@@ -14,9 +14,9 @@ div.MainFrame
     div.line
     div.menuGroup2
         button.btnMenu Роллы
+        button.btnMenu Теплые роллы
         button.btnMenu Суши
-        button.btnMenu Наборы
-        button.btnMenu WOK
+        button.btnMenu Сашими
         button.btnMenu Салаты
         button.btnMenu Десерты
         button.btnMenu Добавки

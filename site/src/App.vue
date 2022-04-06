@@ -6,11 +6,19 @@ Footer
 <script>
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import {mapState} from "vuex"
+
 export default {
   components: {
     Navbar,
     Footer,
   },
+  computed: {
+    ...mapState({
+            token: state => state.auth.token,
+            authed: state => state.auth.authed
+      }),
+    },
 };
 </script>
 <style lang="scss">
@@ -18,7 +26,7 @@ html {
   min-height: 100vh;
 }
 #app {
-  min-height: 100vh;
+  min-height: 97vh;
 }
 @font-face {
   font-family: "Inter Bold Italic";

@@ -49,7 +49,7 @@ class authController{
             return res.status(400).json( {message: 'Неверный пароль'})
         }
         const token = generateAccessToken(user._id, user.role)
-        const profile = {id:0, profileName: user.name, profileAvatar: user.avatar}
+        const profile = {id:0, profileName: user.name}
         const userRoleOut = user.role
         return res.json({token, profile , userRoleOut})
     }

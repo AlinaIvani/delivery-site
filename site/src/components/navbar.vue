@@ -2,9 +2,9 @@
 div.MainFrame
     div(v-show="loginIN == true").authStyle
       div.MainFrameAuth
-        div.AuthBack
+        div.AuthBack(v-show="b")
           div.titleAuth
-            button(@click="loginIN = !loginIN").btnAuthBack Х
+            button(@click="loginIN = !loginIN").btnAuthBack ✖
           div.spanTitle
             span Авторизация
           div.inputAuth
@@ -18,8 +18,31 @@ div.MainFrame
           div.spanTitle
             button.authBtn(@click='authMethod()') Войти
           div.regspanTitle
-            button.regBtn Регистрация
-        div
+            button.regBtn(@click='changeMethod()') Регистрация
+        div.Reg(v-show="a").AuthBack
+          div.titleReg.titleAuth
+            button.btnRegBack.btnAuthBack(@click='changeMethod()') ❮
+          div.spanTitle2.spanTitle
+            span Регистрация
+          div.inputReg.inputAuth
+            span Имя
+            input(type="name" v-model="reg.name").inputStyle
+          div.inputReg.inputAuth
+            span Фамилия
+            input(type="surname" v-model="reg.surname").inputStyle
+          div.inputReg.inputAuth
+            span Логин
+            input(type="username" v-model="reg.login1").inputStyle
+          div.inputReg.inputAuth
+            span Пароль
+            input(type="password1" v-model="reg.password1").inputStyle
+          div.spanTitle
+            span.spanERR(v-show="validation.dataErr1 == true") Ошибка регистрации
+          div.spanTitle
+            span.spanOK(v-show="validation.dataOk == true") Регистрация успешна
+          div.spanTitle2.spanTitle
+            button.RegisBtn.authBtn(@click='regMethod()') Зарегистрироваться
+
     div.menuGroup1
         div
             button.btnMainLogo Sakura
@@ -47,23 +70,52 @@ div.MainFrame
     div.line
 </template>
 <script>
+import { vShow } from '@vue/runtime-dom';
 import {mapState} from "vuex"
 export default {
   data(){
     return {
       validation: {
         dataErr: false,
+        dataErr1: false,
+        dataOk: false,
       },
       auth: {
         login: "",
         password: ""
       },
       loginIN: false,
+      reg: {
+        name: "",
+        surname: "",
+        login1: "",
+        password1: ""
+      },
+      a: false,
+      b: true
     }
   },
   components: {
   },
   methods: {
+    async regMethod(){
+      const response = await fetch("auth/registration", {
+        method: "POST",
+         headers: {"Content-Type": "application/json"},
+         body: JSON.stringify({
+           name: this.reg.name,
+           surname: this.reg.surname,
+           username: this.reg.login1,
+           password: this.reg.password1
+      }),        
+    })
+    if(response.status == 491 || response.status == 492 || response.status == 490){
+      this.validation.dataErr1 = true
+    }
+    else{
+          this.validation.dataOk = true
+        }
+    },
     async authMethod(){
         const response = await fetch("auth/login", {
          method: "POST",
@@ -92,7 +144,12 @@ export default {
       this.$store.commit('auth/newToken', token)
       this.$store.commit('auth/authExit', false)
       this.$store.commit('auth/updateName', profileName)
+    },
+    changeMethod(){
+     this.a = !this.a
+     this.b = !this.b
     }
+
   },
   computed: {
     ...mapState({
@@ -136,10 +193,16 @@ export default {
   background: rgba(232, 115, 115, 0.28);
   box-shadow:  0px 0px 0.08vw 0.08vw #f46a6a;
 }
+
 .spanERR{
   color: red;
   font-size: clamp(15px, 1vw, 20px);
 }
+.spanOK{
+    color: rgb(86, 255, 94);
+  font-size: clamp(15px, 1vw, 20px);
+}
+
 .regspanTitle{
   display: flex;
   justify-content: center;

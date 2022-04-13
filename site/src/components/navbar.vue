@@ -38,11 +38,9 @@ div.MainFrame
             input(type="password1" v-model="reg.password1").inputStyle
           div.spanTitle
             span.spanERR(v-show="validation.dataErr1 == true") Ошибка регистрации
-          div.spanTitle
             span.spanOK(v-show="validation.dataOk == true") Регистрация успешна
-          div.spanTitle2.spanTitle
+          div.spanTitle2.spanTitle.buttonReg
             button.RegisBtn.authBtn(@click='regMethod()') Зарегистрироваться
-
     div.menuGroup1
         div
             button.btnMainLogo Sakura
@@ -57,7 +55,6 @@ div.MainFrame
             div.lkOutDiv
               span(v-show="authed == true").lkStyle {{profileName}}
               button.lkOut(@click="exitMethod()") Выход
-
     div.line
     div.menuGroup2
         button.btnMenu Роллы
@@ -161,6 +158,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.buttonReg{
+  margin-bottom: 2vw;
+}
 .lkOutDiv{
   display: flex;
   flex-direction: column;

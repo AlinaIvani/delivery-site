@@ -55,16 +55,7 @@ div.MainFrame
             div.lkOutDiv
               span(v-show="authed == true").lkStyle {{profileName}}
               button.lkOut(@click="exitMethod()") Выход
-    div.line
-    div.menuGroup2
-        button.btnMenu Роллы
-        button.btnMenu Теплые роллы
-        button.btnMenu Суши
-        button.btnMenu Сашими
-        button.btnMenu Салаты
-        button.btnMenu Десерты
-        button.btnMenu Добавки
-    div.line
+
 </template>
 <script>
 import { vShow } from '@vue/runtime-dom';
@@ -127,7 +118,7 @@ export default {
        }
        else{
        const resJson = await response.json();
-          const token = resJson.token
+          const token = resJson.token    
           const profileName = resJson.profile.profileName
           this.$store.commit('auth/newToken', token)
           this.$store.commit('auth/authExit', true)
@@ -348,26 +339,10 @@ export default {
   font-style: normal;
   font-weight: 600;
 }
-.btnMenu {
-  margin: 0px 1vw 0px 1vw;
-  border: none;
-  background: none;
-  color: #000;
-  font-size: clamp(18px, 1.2vw, 98px);
-  font-family: "Inter Regular";
-  font-style: normal;
-  font-weight: 600;
-}
 .menuGroup1 {
   display: flex;
   gap: 1vw;
   justify-content: space-around;
-  align-items: center;
-}
-.menuGroup2 {
-  display: flex;
-  gap: 1vw;
-  justify-content: center;
   align-items: center;
 }
 .MainFrame {

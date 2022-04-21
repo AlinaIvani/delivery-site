@@ -13,12 +13,7 @@ export default {
     Navbar,
     Footer,
   },
-  computed: {
-    ...mapState({
-            token: state => state.auth.token,
-            authed: state => state.auth.authed
-      }),
-    },
+
 };
 </script>
 <style lang="scss">

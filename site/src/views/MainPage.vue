@@ -10,14 +10,59 @@ div.MainFrame
         button.btnMenu Десерты
         button.btnMenu Добавки
     div.line
-    span {{item.name}}
-
-    
-        
+div.MainFrame
+  div
+    div(v-for="(item, index) in responseData" :key="index")
+      div(v-if="item.category == 'Роллы'")
+        span {{item.name}}
+        span {{item.amount}}
+        span {{item.weight}}
+        span {{item.price}}
+        span {{item.discription}}
+  div
+    div(v-for="(item, index) in responseData" :key="index")
+      div(v-if="item.category == 'Теплые роллы'")
+        span {{item.name}}
+        span {{item.amount}}
+        span {{item.weight}}
+        span {{item.price}}
+        span {{item.discription}}
+  div
+    div(v-for="(item, index) in responseData" :key="index")
+      div(v-if="item.category == 'Суши'")
+        span {{item.name}}
+        span {{item.amount}}
+        span {{item.weight}}
+        span {{item.price}}
+        span {{item.discription}}
+  div
+    div(v-for="(item, index) in responseData" :key="index")
+      div(v-if="item.category == 'Сашими'")
+        span {{item.name}}
+        span {{item.amount}}
+        span {{item.weight}}
+        span {{item.price}}
+        span {{item.discription}}
+  div
+    div(v-for="(item, index) in responseData" :key="index")
+      div(v-if="item.category == 'Салаты'")
+        span {{item.name}}
+        span {{item.amount}}
+        span {{item.weight}}
+        span {{item.price}}
+        span {{item.discription}}
+  div
+    div(v-for="(item, index) in responseData" :key="index")
+      div(v-if="item.category == 'Десерты'")
+        span {{item.name}}
+        span {{item.amount}}
+        span {{item.weight}}
+        span {{item.price}}
+        span {{item.discription}}
 </template>
 <script>
 export default {
-  data(){
+  data() {
     return {
       item: {
         name: "",
@@ -26,32 +71,30 @@ export default {
         category: "",
         price: "",
         discription: "",
-      }
-    }
+      },
+      responseData: "",
+    };
   },
   methods: {
-      async getItems(){
-          try{
-              const response = await fetch("auth/getitem", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-              });
-              const resJson = await response.json()
-              this.responseData = resJson
-          }catch(e){
-              alert(e)
-          }
-          }
+    async getItems() {
+      try {
+        const response = await fetch("auth/getitems", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const resJson = await response.json();
+        this.responseData = resJson;
+      } catch (e) {
+        alert(e);
       }
-
+    },
+  },
+  mounted() {
+    this.getItems()
   }
- 
-
-
-      
-
+};
 </script>
 
 <style lang="scss" scoped>

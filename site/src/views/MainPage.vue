@@ -106,7 +106,7 @@ export default {
   display: flex;
   gap: 1vw;
   justify-content: center;
-  align-items: center;\
+  align-items: center;
 
   
 }

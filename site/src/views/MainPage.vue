@@ -19,6 +19,7 @@ div.MainFrame
         span {{item.weight}}
         span {{item.price}}
         span {{item.discription}}
+        button(@click="itemsAddCart(item.name)") ada
   div
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Теплые роллы'")
@@ -64,6 +65,12 @@ div.MainFrame
 export default {
   data() {
     return {
+      orderList: [
+        {
+          name: '',
+          count: ''
+        }
+      ],
       item: {
         name: "",
         amount: "",
@@ -76,6 +83,21 @@ export default {
     };
   },
   methods: {
+    itemsAddCart(itema){
+      const ArraySize = this.orderList.length
+      for(let i = 0; i < ArraySize; i++){
+        console.log(itema)
+        if(this.orderList[i].name == itema){
+          this.orderList[i].count++
+          break ;
+        }
+        else{
+          this.orderList[i].name = itema
+          this.orderList[i].count = 1
+          }
+        }
+      this.$store.commit('order/addOrderList', this.orderList)
+      },
     async getItems() {
       try {
         const response = await fetch("auth/getitems", {

@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import { authModule } from './authModule.js';
+import { orderModule } from './orderModule.js';
 
 export default createStore({
   state: {
@@ -7,6 +8,7 @@ export default createStore({
   },
   
   modules: {
-    auth: authModule
+    auth: authModule,
+    order: orderModule
   }
 })

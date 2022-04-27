@@ -43,14 +43,14 @@ div.MainFrame
             button.RegisBtn.authBtn(@click='regMethod()') Зарегистрироваться
     div.menuGroup1
         div
-            button.btnMainLogo Sakura
+            button.btnMainLogo(@click="this.$router.push('/')") Sakura
         div.buttonGroup
             button.btnMain Доставка
             button.btnMain О нас
             button.btnMain Акции
             div.buttonGroup
                 span.btnMain 0
-                img(src="@/assets/cart.svg").cartStyle
+                img(src="@/assets/cart.svg" @click="this.$router.push('/cart')").cartStyle
             button.btnSignUp(@click="loginIN = !loginIN" v-show="authed == false") Войти
             div.lkOutDiv
               span(v-show="authed == true").lkStyle {{profileName}}
@@ -310,7 +310,7 @@ export default {
   border: none;
   background: none;
   color: #fe785b;
-  font-size: 27px;
+  font-size: 2vw;
   font-family: "Inter Regular";
   font-style: normal;
   font-weight: 600;

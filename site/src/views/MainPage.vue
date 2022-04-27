@@ -10,67 +10,14 @@ div.MainFrame
         button.btnMenu Десерты
         button.btnMenu Добавки
     div.line
-div.MainFrame
-  div
-    div(v-for="(item, index) in responseData" :key="index")
-      div(v-if="item.category == 'Роллы'")
-        span {{item.name}}
-        span {{item.amount}}
-        span {{item.weight}}
-        span {{item.price}}
-        span {{item.discription}}
-        button(@click="itemsAddCart(item.name)") ada
-  div
-    div(v-for="(item, index) in responseData" :key="index")
-      div(v-if="item.category == 'Теплые роллы'")
-        span {{item.name}}
-        span {{item.amount}}
-        span {{item.weight}}
-        span {{item.price}}
-        span {{item.discription}}
-  div
-    div(v-for="(item, index) in responseData" :key="index")
-      div(v-if="item.category == 'Суши'")
-        span {{item.name}}
-        span {{item.amount}}
-        span {{item.weight}}
-        span {{item.price}}
-        span {{item.discription}}
-  div
-    div(v-for="(item, index) in responseData" :key="index")
-      div(v-if="item.category == 'Сашими'")
-        span {{item.name}}
-        span {{item.amount}}
-        span {{item.weight}}
-        span {{item.price}}
-        span {{item.discription}}
-  div
-    div(v-for="(item, index) in responseData" :key="index")
-      div(v-if="item.category == 'Салаты'")
-        span {{item.name}}
-        span {{item.amount}}
-        span {{item.weight}}
-        span {{item.price}}
-        span {{item.discription}}
-  div
-    div(v-for="(item, index) in responseData" :key="index")
-      div(v-if="item.category == 'Десерты'")
-        span {{item.name}}
-        span {{item.amount}}
-        span {{item.weight}}
-        span {{item.price}}
-        span {{item.discription}}
+
+    
+        
 </template>
 <script>
 export default {
-  data() {
+  data(){
     return {
-      orderList: [
-        {
-          name: '',
-          count: ''
-        }
-      ],
       item: {
         name: "",
         amount: "",
@@ -78,45 +25,32 @@ export default {
         category: "",
         price: "",
         discription: "",
-      },
-      responseData: "",
-    };
+      }
+    }
   },
   methods: {
-    itemsAddCart(itema){
-      const ArraySize = this.orderList.length
-      for(let i = 0; i < ArraySize; i++){
-        console.log(itema)
-        if(this.orderList[i].name == itema){
-          this.orderList[i].count++
-          break ;
-        }
-        else{
-          this.orderList[i].name = itema
-          this.orderList[i].count = 1
+      async getItems(){
+          try{
+              const response = await fetch("auth/getitem", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+              });
+              const resJson = await response.json()
+              this.responseData = resJson
+          }catch(e){
+              alert(e)
           }
-        }
-      this.$store.commit('order/addOrderList', this.orderList)
-      },
-    async getItems() {
-      try {
-        const response = await fetch("auth/getitems", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const resJson = await response.json();
-        this.responseData = resJson;
-      } catch (e) {
-        alert(e);
+          }
       }
-    },
-  },
-  mounted() {
-    this.getItems()
+
   }
-};
+ 
+
+
+      
+
 </script>
 
 <style lang="scss" scoped>
@@ -129,8 +63,6 @@ export default {
   gap: 1vw;
   justify-content: center;
   align-items: center;
-
-  
 }
 .menuGroup1 {
   border: none;

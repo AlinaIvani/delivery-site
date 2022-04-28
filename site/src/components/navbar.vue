@@ -47,7 +47,7 @@ div.MainFrame
         div.buttonGroup
             button.btnMain Доставка
             button.btnMain О нас
-            button.btnMain Акции
+            button.btnMain(@click="this.$router.push('/admin')") Администратор
             div.buttonGroup
                 span.btnMain 0
                 img(src="@/assets/cart.svg" @click="this.$router.push('/cart')").cartStyle

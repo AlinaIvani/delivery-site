@@ -45,9 +45,9 @@ div.MainFrame
         div
             button.btnMainLogo(@click="this.$router.push('/')") Sakura
         div.buttonGroup
+            button.btnMain(@click="this.$router.push('/admin')")  Администратор
             button.btnMain Доставка
             button.btnMain О нас
-            button.btnMain Акции
             div.buttonGroup
                 span.btnMain 0
                 img(src="@/assets/cart.svg" @click="this.$router.push('/cart')").cartStyle

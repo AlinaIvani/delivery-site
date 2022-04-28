@@ -4,7 +4,7 @@ const {validationResult} = require('express-validator')
 class ItemsController {
     async addItems(req, res){
         try {
-            const {name, amount, weight, category, price,discription} = req.body
+            const {name, amount, weight, category, price, discription} = req.body
             const valerror = validationResult(req)
             if(!valerror.isEmpty()){
                 return res.status(400).json({message: "Название не может быть пустым"})

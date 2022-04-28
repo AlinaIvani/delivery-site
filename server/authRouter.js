@@ -17,7 +17,7 @@ router.post('/login', controller.login)
 router.get('/users', roleMiddleware(["ADMIN"]), controller.users)
 
 
-router.post('/additems', roleMiddleware(["ADMIN"]), [check('name', 'Имя не может быть пустым').notEmpty()], ItemsController.addItems)
+router.post('/additems', roleMiddleware(["USER", "ADMIN"]), [check('name', 'Имя не может быть пустым').notEmpty()], ItemsController.addItems)
 router.post('/delitems', roleMiddleware(["ADMIN"]), ItemsController.delItems)
 router.get('/getitems', ItemsController.getItems)
 

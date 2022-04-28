@@ -21,7 +21,7 @@ class authController{
        if(!errors.isEmpty()){
             return res.status(492).json({message: "Пароль пустой и должен быть больше 6 и меньше 16", errors})
         } 
-        const {name, surname, username, password,} = req.body
+        const {name, surname, username, password} = req.body
         const canditate = await User.findOne( {username} )
         if(canditate){
             return res.status(490).json({message: "Такой пользователь уже есть"})
@@ -51,7 +51,7 @@ class authController{
         const token = generateAccessToken(user._id, user.role)
         const profile = {id:0, profileName: user.name}
         const userRoleOut = user.role
-        return res.json({token, profile , userRoleOut})
+        return res.json({token, profile, userRoleOut})
     }
      catch (e) {
         res.status(400).json( {message: 'Ошибка авторизации'})

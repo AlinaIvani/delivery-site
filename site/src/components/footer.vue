@@ -11,7 +11,6 @@ div.MainFrame
     div.sp5
         span с 10:00 до 22:00
 </template>
-
 <style lang="scss" scoped>
 
 .MainFrame{
@@ -25,7 +24,6 @@ div.MainFrame
     font-size: clamp(25px, 1.2vw, 98px);
     bottom: 0;
     position: fixed;
-
 }
 
 </style>

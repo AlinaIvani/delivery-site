@@ -13,7 +13,7 @@ div.MainFrame
 div.MainFrame1
   span.name Роллы
     div.line1
-  div
+  div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Роллы'")
         img(src="@/assets/tray.jpg" @click="info = !info")
@@ -115,19 +115,22 @@ export default {
     }
   },
   methods: {
-     itemsAddCart(itema){
+     async itemsAddCart(itema){
       const ArraySize = this.orderList.length
-      for(let i = 0; i < ArraySize; i++){
-        console.log(itema)
-        if(this.orderList[i].name == itema){
-          this.orderList[i].count++
-          break ;
+      const itemName = itema
+      const perem = 0
+      for(let i = 0; i <= ArraySize; i++){
+        console.log(itemName)
+        const arrayItem=this.orderList[i]
+        if(arrayItem.name == itemName){
+          arrayItem.count++
+          this.orderList[i] = arrayItem
+          perem = perem+1
         }
-        else{
-          this.orderList[i].name = itema
-          this.orderList[i].count = 1
-          }
         }
+      if(perem >= 1){
+          this.orderList.push({name: itemName, count: 1})
+      }
       this.$store.commit('order/addOrderList', this.orderList)
       },
       async getItems(){
@@ -156,6 +159,10 @@ export default {
 .line {
   margin: 20px 0px 20px 0px;
   border-bottom: 1px solid #fe785b;
+}
+menu{
+  display: flex;
+  flex-direction: row;
 }
 .line1 {
   margin: 10px 0px 10px 0px;

@@ -14,7 +14,7 @@ router.post('/registration', [
     check('password', 'Пароль должен быть больше 6 и меньше 16').isLength({min:6, max:16}),
     ], controller.registration)
 router.post('/login', controller.login)
-router.get('/users', roleMiddleware(["ADMIN"]), controller.users)
+router.get('/users', controller.users)
 
 
 router.post('/additems', roleMiddleware(["ADMIN"]), [check('name', 'Имя не может быть пустым').notEmpty()], ItemsController.addItems)

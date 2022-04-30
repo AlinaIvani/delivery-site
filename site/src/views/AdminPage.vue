@@ -1,37 +1,54 @@
 <template lang="pug">
 div.MainFrame
-    div(v-show="addItems == true").addStyle
-        div.MainFrameItems
-            div.addItems
-                div.titleAdd
-                    button(@click="addItems = !addItems").btnAddBack ✖
-                div.spanAdd
-                    span Добавить заказ
-                div.inputAdd
-                    span Название
-                    input.inputStyle(type="name" v-model="item.name")
-                div.inputAdd
-                    span Количество
-                    input.inputStyle(type="amount" v-model="item.amount")
-                div.inputAdd
-                    span Вес(граммы)
-                    input.inputStyle(type="weight" v-model="item.weight")
-                div.selectCategor.inputAdd
-                    span Выберите категорию
-                    input.inputStyle(type="category" v-model="item.category")
-                div.inputAdd
-                    span Цена
-                    input.inputStyle(type="price" v-model="item.price")
-                div.inputAdd
-                    span Состав
-                    input.inputStyle(type="discription" v-model="item.discription")
-                div.spanTitle
-                    span.spanERR(v-show="validation.dataErr == true") Ошибка 
-                    span.spanOK(v-show="validation.dataOk == true") успешно
-                div.spanAdd 
-                    button.sendBtn(@click='addMethod()') Сохранить     
-div.add
+  div(v-show="delItems == true").addStyle
+    div.MainFrameItems
+      div.delItems
+        div.titleAdd
+          button(@click="delItems = !delItems").btnAddBack ✖
+        div.spanAdd
+          span Удалить позицию меню
+        div.inputAdd
+          span Название
+          input.inputStyle(type="name" v-model="item.name")
+        div.spanTitle
+          span.spanERR1.spanERR(v-show="validation.dataErr1 == true") Данной позиции нет в меню
+          span.spanOK1.spanOK(v-show="validation.dataOk1 == true") Успешно
+        div.spanDell.spanAdd
+          button.sendBtn(@click='delMethod()') Удалить
+  div(v-show="addItems == true").addStyle
+    div.MainFrameItems
+      div.addItems
+        div.titleAdd
+          button(@click="addItems = !addItems").btnAddBack ✖
+        div.spanAdd
+          span Добавить позицию меню
+        div.inputAdd
+          span Название
+          input.inputStyle(type="name" v-model="item.name")
+        div.inputAdd
+          span Количество
+          input.inputStyle(type="amount" v-model="item.amount")
+        div.inputAdd
+          span Вес(граммы)
+          input.inputStyle(type="weight" v-model="item.weight")
+        div.selectCategor.inputAdd
+          span Выберите категорию
+          input.inputStyle(type="category" v-model="item.category")
+        div.inputAdd
+          span Цена
+          input.inputStyle(type="price" v-model="item.price")
+        div.inputAdd
+          span Состав
+          input.inputStyle(type="discription" v-model="item.discription")
+        div.spanTitle
+          span.spanERR(v-show="validation.dataErr == true") Ошибка 
+          span.spanOK(v-show="validation.dataOk == true") Успешно
+        div.spanAdd 
+          button.sendBtn(@click='addMethod()') Сохранить     
+  div.add
     button.addBtn(@click="addItems = !addItems") Добавить новую позицию меню
+  div.del
+    button.delBtn.addBtn(@click="delItems = !delItems") Удалить позицию меню
 
 
 </template>
@@ -42,10 +59,13 @@ export default {
     return {
     a: false,
     addItems: false,
+    delItems: false,
     selected: "",
     validation: {
         dataErr: false,
         dataOk: false,
+        dataErr1: false,
+        dataOk1: false,
       },
     item: {
         name: "",
@@ -80,6 +100,23 @@ methods: {
       this.validation.dataOk = true
         }
     },
+    async delMethod(){
+      const response = await fetch("auth/delItems", {
+        method: "POST",
+         headers: {"Content-Type": "application/json",
+                  "Authorization": `Bearer ${this.token}`
+                  },
+         body: JSON.stringify({
+           name: this.item.name,
+      }),        
+    })
+    if(response.status == 400 || response.status == 404){
+      this.validation.dataErr1 = true
+    }
+    else{
+      this.validation.dataOk1 = true
+        }
+    },
 },
 computed: {
     ...mapState({
@@ -89,6 +126,20 @@ computed: {
 }
 </script>
 <style>
+.spanTitle{
+  display: flex;
+  justify-content: center;
+  font-size: 2vw;
+  font-family: "Inter Regular";
+}
+.spanERR{
+  color: red;
+  font-size: clamp(15px, 1vw, 20px);
+}
+.spanOK{
+    color: rgb(86, 255, 94);
+  font-size: clamp(15px, 1vw, 20px);
+}
 .MainFrame {
   font-family: "Inter Regular";
   display: flex;
@@ -139,6 +190,15 @@ computed: {
     flex-direction: column;
     width: 60%;
     height: 70%;
+    border-radius: 1vw;
+    justify-content: space-between;
+  }
+.delItems{
+    background: white;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    height: 50%;
     border-radius: 1vw;
     justify-content: space-between;
   }

@@ -24,8 +24,6 @@ div.MainFrame
     text-align: center;
     font-size: clamp(25px, 1.2vw, 98px);
     bottom: 0;
-    position: fixed;
-
 }
 
 </style>

@@ -5,6 +5,7 @@ const Items = new Schema({
     amount: {type: Number},
     weight: {type: Number, required:true},
     category: {type: String, required: true},
+    img: {type:String, default: 0},
     price: {type: Number, required:true},
     discription: {type: String, required:true}
 })

@@ -3,7 +3,23 @@ const {validationResult} = require('express-validator')
 
 class OrderController {
     async addOrders(req,res){
-        return res.status(200).json({message: "dsadsads"})
+        try{
+            const {username, mobileNumber, adress, items} = req.body
+            const order = new Orders({username: username, mobileNumber: mobileNumber, adress: adress, items: items })
+            await order.save()
+            return res.status(200).json({message: "Успешно"})
+        }
+        catch(e){
+            return res.status(400).json({message: "Ошибка"})
+        }
+    }
+    async getOrders(req,res){
+        try{
+            const allOrders = await Orders.find()
+            return res.status(200).json(allOrders)
+        }catch(e){
+            return res.status(400).json({message: "Ошибка"})
+        }
     }
 }
 

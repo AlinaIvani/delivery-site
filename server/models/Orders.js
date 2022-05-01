@@ -1,7 +1,10 @@
 const {Schema, model} = require('mongoose')
 
 const Orders = new Schema({
-    name: {type: String, required:true},
+    username: {type: String, required:true},
+    adress: {type: String, required:true},
+    mobileNumber: {type: String, required:true},
+    items: {type: Object, required:true},
 })
 
 module.exports = model('Orders', Orders)

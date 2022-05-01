@@ -49,7 +49,7 @@ div.MainFrame
             button.btnMain О нас
             button.btnMain(@click="this.$router.push('/admin')") Администратор
             div.buttonGroup
-                span.btnMain 0
+                span.btnMain {{totalPrice}}
                 img(src="@/assets/cart.svg" @click="this.$router.push('/cart')").cartStyle
             button.btnSignUp(@click="loginIN = !loginIN" v-show="authed == false") Войти
             div.lkOutDiv
@@ -143,7 +143,9 @@ export default {
     ...mapState({
             token: state => state.auth.token,
             authed: state => state.auth.authed,
-            profileName: state => state.auth.profileName
+            profileName: state => state.auth.profileName,
+            arrayObj: state => state.order.arrayObj,
+            totalPrice: state => state.order.totalPrice
     }),
   },
 };

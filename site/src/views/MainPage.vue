@@ -16,92 +16,84 @@ div.MainFrame1
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Роллы'")
-        img(src="@/assets/tray.jpg" @click="info = !info")
+        img(:src="require(`@/assets/${item._id}.jpg`)" @click="info = !info")
         div.name
           span {{item.name}}
           span {{item.price}} руб.
-        button.add(@click="itemsAddCart(item.name)") В корзину
+        button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
   span.name Теплые роллы
     div.line1
-  div
+  div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Теплые роллы'")
         img(src="@/assets/tray.jpg" @click="info = !info")
         div.name
           span {{item.name}}
           span {{item.price}} руб.
-        button.add(@click="itemsAddCart(item.name)") В корзину
+        button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
   span.name Суши
     div.line1
-  div
+  div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Суши'")
         img(src="@/assets/tray.jpg" @click="info = !info")
         div.name
           span {{item.name}}
           span {{item.price}} руб.
-        button.add(@click="itemsAddCart(item.name)") В корзину 
+        button.add(@click="itemsAddCart(item.name, item.price)") В корзину 
 
   span.name Сашими
     div.line1
-  div
+  div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Сашими'")
         img(src="@/assets/tray.jpg" @click="info = !info")
         div.name
           span {{item.name}}
           span {{item.price}} руб.
-        button.add(@click="itemsAddCart(item.name)") В корзину
+        button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
   span.name Салаты
     div.line1
-  div
+  div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Салаты'")
           img(src="@/assets/tray.jpg" @click="info = !info")
           div.name
             span {{item.name}}
             span {{item.price}} руб.
-          button.add(@click="itemsAddCart(item.name)") В корзину
+          button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
   span.name Десерты
     div.line1
-  div
+  div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Десерты'")
         img(src="@/assets/tray.jpg" @click="info = !info")
         div.name
           span {{item.name}}
           span {{item.price}} руб.
-        button.add(@click="itemsAddCart(item.name)") В корзину
+        button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
   span.name Добавки
     div.line1
-  div
+  div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Добавки'")
         img(src="@/assets/tray.jpg" @click="info = !info")
         div.name
           span {{item.name}}
           span {{item.price}} руб.
-        button.add(@click="itemsAddCart(item.name)") В корзину
-
-
-  
+        button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 </template>
 
 <script>
+import {mapState} from "vuex"
 export default {
   data(){
     return {
-      orderList: [
-        {
-          name: '',
-          count: ''
-        }
-      ],
       item: {
         name: "",
         amount: "",
@@ -115,23 +107,22 @@ export default {
     }
   },
   methods: {
-     async itemsAddCart(itema){
-      const ArraySize = this.orderList.length
-      const itemName = itema
-      const perem = 0
-      for(let i = 0; i <= ArraySize; i++){
-        console.log(itemName)
-        const arrayItem=this.orderList[i]
-        if(arrayItem.name == itemName){
-          arrayItem.count++
-          this.orderList[i] = arrayItem
+     async itemsAddCart(itema, itemprice){
+      const ArraySize = this.arrayObj.orderList.length
+      let perem = 0
+      for(let i = 0; i < ArraySize; i++){
+        if(this.arrayObj.orderList[i].name == itema){
+          this.arrayObj.orderList[i].count++
+          this.arrayObj.orderList[i].price = this.arrayObj.orderList[i].price + itemprice
+          this.$store.commit('order/plusPrice', itemprice)
           perem = perem+1
+          }
         }
-        }
-      if(perem >= 1){
-          this.orderList.push({name: itemName, count: 1})
+      if(perem < 1){
+          this.arrayObj.orderList.push({name: itema, count: 1, price: itemprice})
+          this.$store.commit('order/plusPrice', itemprice)
       }
-      this.$store.commit('order/addOrderList', this.orderList)
+      this.$store.commit('order/addOrderList', this.arrayObj.orderList)
       },
       async getItems(){
           try{
@@ -146,12 +137,23 @@ export default {
           }catch(e){
               alert(e)
           }
-          }
+          },
+      getImgUrl(itemID){
+        console.log(itemID)
+          const image = require.context('@/assets/', false, /\.jpg$/)
+          const url = `../assets/${itemID}.jpg`
+          
+      }
       },
       mounted() {
       this.getItems()
-
-  }
+      },
+      computed: {
+    ...mapState({
+            arrayObj: state => state.order.arrayObj,
+            totalPrice: state => state.order.totalPrice
+    })
+  },
 }
 </script>
 
@@ -160,7 +162,7 @@ export default {
   margin: 20px 0px 20px 0px;
   border-bottom: 1px solid #fe785b;
 }
-menu{
+.menu{
   display: flex;
   flex-direction: row;
 }
@@ -228,6 +230,9 @@ menu{
   font-family: "Inter Regular";
   font-style: normal;
   font-weight: 600;
+}
+.add:focus{
+  transform: translateY(3px);
 }
 .MainFrameInfo{
     position: relative;

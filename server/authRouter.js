@@ -23,6 +23,6 @@ router.get('/getitems', ItemsController.getItems)
 
 
 router.post('/addorders',roleMiddleware(["USER", "ADMIN"],), OrderController.addOrders)
-
+router.get('/getorders',roleMiddleware(["ADMIN"],), OrderController.getOrders)
 
 module.exports = router

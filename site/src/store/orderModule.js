@@ -1,14 +1,19 @@
-import store from "."
 
 export const orderModule = {
     state: () => ({
-      orderList: [
-         
-      ]
+        arrayObj: {
+            orderList: [
+    
+            ]
+          },
+          totalPrice: 0,
     }),
     mutations: {
         addOrderList(state, exit){
-            state.orderList = exit
+            state.arrayObj.orderList = exit
+        },
+        plusPrice(state,exit){
+            state.totalPrice += exit
         },
     },
     getters: {

@@ -4,8 +4,8 @@ const {validationResult} = require('express-validator')
 class OrderController {
     async addOrders(req,res){
         try{
-            const {username, mobileNumber, adress, items} = req.body
-            const order = new Orders({username: username, mobileNumber: mobileNumber, adress: adress, items: items })
+            const {username, mobileNumber, adress, items, totalprice} = req.body
+            const order = new Orders({username: username, mobileNumber: mobileNumber, adress: adress, items: items, totalprice: totalprice })
             await order.save()
             return res.status(200).json({message: "Успешно"})
         }

@@ -3,22 +3,37 @@ div.MainFrame
     div.name
         span Ваше имя: {{profileName}}
     div.item
-        span Заказано
-    div(v-for="(item, index) in arrayObj.orderList" :key="index")
-        span {{item.name}}
-        button(@click="countEdit(item.name, -1)") -
-        span {{item.count}}
-        button(@click="countEdit(item.name, 1)") +
-        span {{item.price}}
-        button(@click="delItem(item.name)") Удалить
+        span Заказано:
+    div.items
+        div(v-for="(item, index) in arrayObj.orderList" :key="index")
+            div.order
+                div.name
+                    span {{item.name}}
+                div.count
+                    button.btt(@click="countEdit(item.name, -1)") -
+                    span {{item.count}}
+                    button.btt(@click="countEdit(item.name, 1)") +
+                div.price
+                    span {{item.price}} руб.
+                div.del
+                    button.btt(@click="delItem(item.name)") Удалить
     div.number
-        span Номер телефона
+        span Номер телефона:
         input.inputStyle(v-model="this.mobilenumber")
     div.address
-        span Адрес
+        span Адрес:
         input.inputStyle(v-model="this.adress")
+    div.totalPrice
+        span Общая сумма заказа: {{totalPrice}} руб.
+    div.info.de
+        span Оплата наличными при получении заказа!
+    div.info2.de
+        span Особенности доставки уточняйте у оператора
+    div.mas.de
+        span.spanERR(v-show="validation.dataErr == true") Ошибка оформления
+        span.spanOK(v-show="validation.dataOk == true") Заказ успешно оформлен
     div.de
-    button(@click="postOrder()") Заказать
+        button.bt(@click="postOrder()") Оформить заказ
 </template>
 
 <script>
@@ -27,7 +42,12 @@ export default {
     data(){
         return{
             adress: "",
-            mobilenumber: ""
+            mobilenumber: "",
+        validation: {
+            dataErr: false,
+            dataOk: false
+        }
+
         }
     },
   methods: {
@@ -61,7 +81,6 @@ export default {
         this.$store.commit('order/addOrderList', this.arrayObj.orderList)
       },
       async postOrder(){
-          try{
               const response = await fetch("auth/addorders", {
                 method: "POST",
                 headers: {
@@ -72,16 +91,18 @@ export default {
                     username: this.profileName,
                     adress: this.adress,
                     mobileNumber: this.mobilenumber,
-                    items: this.arrayObj.orderList
-                }),        
+                    items: this.arrayObj.orderList,
+                    totalprice: this.totalPrice,
+                }),       
               });
-              const resJson = await response.json()
-              alert(resJson.message)
-          }catch(e){
-              alert(e)
-          }
+        if(response.status == 400){
+        this.validation.dataErr = true
+    }
+        else{
+        this.validation.dataOk = true
         }
-  },
+    },
+    },
   computed: {
     ...mapState({
       profileName: (state) => state.auth.profileName,
@@ -93,4 +114,80 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.spanERR{
+  color: red;
+  font-size: clamp(15px, 1vw, 20px);
+}
+.spanOK{
+  color: rgb(86, 255, 94);
+  font-size: clamp(15px, 1vw, 20px);
+}
+.inputStyle{
+  margin: 5px 10px 5px 10px;
+  grid-template-columns: 9% 30%;
+  justify-content: center;
+  gap: 1vw;
+  align-items: center;
+  font-family: "Inter Regular";
+  font-size: 1vw;
+}
+.de{
+  text-align: center;
+}
+.bt{
+  margin: 10px 10px 10px 10px;
+  border: none;
+  padding: 0.8vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-radius: 10px;
+  background: #fe785b;
+  color: white;
+  font-size: clamp(19px, 1.2vw, 98px);
+  font-family: "Inter Regular";
+  font-style: normal;
+  font-weight: 600;
+}
+.btt{
+  margin: 10px 10px 10px 10px;
+  text-align: center;
+  border: none;
+  padding: 0.5vw;
+  padding-left: 0.5vw;
+  padding-right: 0.5vw;
+  border-radius: 10px;
+  background: #fe785b;;
+  color: white ;
+  font-size: clamp(10px, 1.2vw, 98px);
+  font-family: "Inter Regular";
+  font-style: normal;
+  font-weight: 600;
+}
+.MainFrame{
+  font-family: "Inter Regular";
+  margin: 1vw;
+  font-size: 1.2vw
+}
+.items{
+  display: flex;
+  margin: 1vw;
+  gap: 1vw;
+  align-items: center;
+  text-align: center;
+}
+.order{
+  margin: 0px 10px 0px 10px;
+  border: solid;
+  padding: 0.8vw;
+  border-color: #fe785b;
+  border-width: 1px;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-radius: 10px;
+  font-family: "Inter Regular";
+  font-size: 1.2vw;
+  font-style: normal;
+
+}
+</style>

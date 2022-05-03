@@ -7,7 +7,7 @@ div.MainFrame
     div.sp3
         span +7-963-814-47-85
     div.sp4
-        span Ждем ваших звонков
+        span Ждем ваших заказов
     div.sp5
         span с 10:00 до 22:00
 </template>

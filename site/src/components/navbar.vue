@@ -45,8 +45,6 @@ div.MainFrame
         div
             button.btnMainLogo(@click="this.$router.push('/')") Sakura
         div.buttonGroup
-            button.btnMain Доставка
-            button.btnMain О нас
             button.btnMain(@click="this.$router.push('/admin')") Администратор
             div.buttonGroup
                 span.btnMain {{totalPrice}}
@@ -55,10 +53,8 @@ div.MainFrame
             div.lkOutDiv
               span(v-show="authed == true").lkStyle {{profileName}}
               button.lkOut(@click="exitMethod()") Выход
-
 </template>
 <script>
-import { vShow } from '@vue/runtime-dom';
 import {mapState} from "vuex"
 export default {
   data(){
@@ -77,7 +73,8 @@ export default {
         name: "",
         surname: "",
         login1: "",
-        password1: ""
+        password1: "",
+        role: ""
       },
       a: false,
       b: true
@@ -110,7 +107,8 @@ export default {
          headers: {"Content-Type": "application/json"},
          body: JSON.stringify({
             username: this.auth.login,
-            password: this.auth.password
+            password: this.auth.password,
+            role: this.auth.role
          }),
        })
        if(response.status == 400){
@@ -145,7 +143,7 @@ export default {
             authed: state => state.auth.authed,
             profileName: state => state.auth.profileName,
             arrayObj: state => state.order.arrayObj,
-            totalPrice: state => state.order.totalPrice
+            totalPrice: state => state.order.totalPrice,
     }),
   },
 };

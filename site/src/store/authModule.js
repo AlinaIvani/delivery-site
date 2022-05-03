@@ -3,6 +3,7 @@ export const authModule = {
       authed: false,
       token: "",
       profileName: "",
+      profileRole: "",
     }),
     mutations: {
       authExit(state, exit){
@@ -12,8 +13,8 @@ export const authModule = {
           state.token = token;
       },
       updateName(state, name){
-          state.profileName = name
-      },
+          state.profileName = name;
+      }
     },
     getters: {
       gettoken(state){

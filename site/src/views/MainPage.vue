@@ -2,24 +2,24 @@
 div.MainFrame
     div.line
     div.menuGroup
-        button.btnMenu Роллы
-        button.btnMenu Теплые роллы
-        button.btnMenu Суши
-        button.btnMenu Сашими
-        button.btnMenu Салаты
-        button.btnMenu Десерты
-        button.btnMenu Добавки
+        button.btnMenu Меню
     div.line
 div.MainFrame1
   span.name Роллы
     div.line1
+
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Роллы'")
-        img(:src="require(`@/assets/${item._id}.jpg`)" @click="info = !info")
+        img(:src="require(`@/assets/${item.name}.jpg`)")
         div.name
           span {{item.name}}
+          span Количество: {{item.amount}} шт.
+          span Вес: {{item.weight}} гр.
+          span.disk(v-show="info == true") Состав: {{item.discription}}
+          button.btn(@click="info = !info") Посмотреть состав
           span {{item.price}} руб.
+
         button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
   span.name Теплые роллы
@@ -27,9 +27,13 @@ div.MainFrame1
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Теплые роллы'")
-        img(src="@/assets/tray.jpg" @click="info = !info")
+        img(:src="require(`@/assets/${item.name}.jpg`)")
         div.name
           span {{item.name}}
+          span Количество: {{item.amount}} шт.
+          span Вес: {{item.weight}} гр.
+          span.disk(v-show="info1 == true") Состав: {{item.discription}}
+          button.btn(@click="info1 = !info1") Посмотреть состав
           span {{item.price}} руб.
         button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
@@ -38,9 +42,13 @@ div.MainFrame1
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Суши'")
-        img(src="@/assets/tray.jpg" @click="info = !info")
+        img(:src="require(`@/assets/${item.name}.jpg`)")
         div.name
           span {{item.name}}
+          span Количество: {{item.amount}} шт.
+          span Вес: {{item.weight}} гр.
+          span.disk(v-show="info2 == true") Состав: {{item.discription}}
+          button.btn(@click="info2 = !info2") Посмотреть состав
           span {{item.price}} руб.
         button.add(@click="itemsAddCart(item.name, item.price)") В корзину 
 
@@ -49,9 +57,12 @@ div.MainFrame1
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Сашими'")
-        img(src="@/assets/tray.jpg" @click="info = !info")
+        img(:src="require(`@/assets/${item.name}.jpg`)")
         div.name
           span {{item.name}}
+          span Вес: {{item.weight}} гр.
+          span.disk(v-show="info3 == true") Состав: {{item.discription}}
+          button.btn(@click="info3 = !info3") Посмотреть состав
           span {{item.price}} руб.
         button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
@@ -60,9 +71,12 @@ div.MainFrame1
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Салаты'")
-          img(src="@/assets/tray.jpg" @click="info = !info")
+          img(:src="require(`@/assets/${item.name}.jpg`)")
           div.name
             span {{item.name}}
+            span Вес: {{item.weight}} гр.
+            span.disk(v-show="info4 == true") Состав: {{item.discription}}
+            button.btn(@click="info4 = !info4") Посмотреть состав
             span {{item.price}} руб.
           button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
@@ -71,9 +85,13 @@ div.MainFrame1
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Десерты'")
-        img(src="@/assets/tray.jpg" @click="info = !info")
+        img(:src="require(`@/assets/${item.name}.jpg`)")
         div.name
           span {{item.name}}
+          span Количество: {{item.amount}} шт.
+          span Вес: {{item.weight}} гр.
+          span.disk(v-show="info5 == true") Состав: {{item.discription}}
+          button.btn(@click="info5 = !info5") Посмотреть состав
           span {{item.price}} руб.
         button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 
@@ -82,9 +100,10 @@ div.MainFrame1
   div.menu
     div(v-for="(item, index) in responseData" :key="index")
       div(v-if="item.category == 'Добавки'")
-        img(src="@/assets/tray.jpg" @click="info = !info")
+        img(:src="require(`@/assets/${item.name}.jpg`)")
         div.name
           span {{item.name}}
+          span Вес: {{item.weight}} гр.
           span {{item.price}} руб.
         button.add(@click="itemsAddCart(item.name, item.price)") В корзину
 </template>
@@ -104,6 +123,13 @@ export default {
 
       },
       responseData: "",
+      info: false,
+      info1: false,
+      info2: false,
+      info3: false,
+      info4: false,
+      info5: false,
+
     }
   },
   methods: {
@@ -138,12 +164,6 @@ export default {
               alert(e)
           }
           },
-      getImgUrl(itemID){
-        console.log(itemID)
-          const image = require.context('@/assets/', false, /\.jpg$/)
-          const url = `../assets/${itemID}.jpg`
-          
-      }
       },
       mounted() {
       this.getItems()
@@ -158,6 +178,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.disk{
+  border: solid;
+  padding: 0.8vw;
+  margin: 10px 10px 10px 10px;
+  border-width: 0.5px;
+  padding-left:0.1vw;
+  padding-right: 0.1vw;
+  border-radius: 10px;
+  border-color: #fe785b;
+}
 .line {
   margin: 20px 0px 20px 0px;
   border-bottom: 1px solid #fe785b;
@@ -174,7 +204,7 @@ export default {
   display: flex;
   justify-content: space-between;
   margin: 1vw;
-  flex-direction: column
+  flex-direction: column;
 }
 .MainFrame1{
   display: flex;
@@ -197,7 +227,7 @@ export default {
   border: none;
   background: none;
   color: #000;
-  font-size: clamp(18px, 1.2vw, 98px);
+  font-size: clamp(25px, 1.2vw, 98px);
   font-family: "Inter Regular";
   font-style: normal;
   font-weight: 600;
@@ -216,6 +246,20 @@ export default {
   justify-content: space-between;
   margin: 1vw;
   flex-direction: column;
+}
+.btn{
+  margin: 10px 10px 10px 10px;
+  border: none;
+  padding: 0.1vw;
+  padding-left: 0.1vw;
+  padding-right: 0.1vw;
+  border-radius: 10px;
+  background: #fe785b;
+  color: white;
+  font-size: clamp(15px, 1.2vw, 98px);
+  font-family: "Inter Regular";
+  font-style: normal;
+  font-weight: 600;
 }
 .add{
   margin: 0px 10px 0px 10px;

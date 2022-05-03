@@ -45,10 +45,34 @@ div.MainFrame
           span.spanOK(v-show="validation.dataOk == true") Успешно
         div.spanAdd 
           button.sendBtn(@click='addMethod()') Сохранить     
-  div.add
-    button.addBtn(@click="addItems = !addItems") Добавить новую позицию меню
-  div.del
-    button.delBtn.addBtn(@click="delItems = !delItems") Удалить позицию меню
+  
+  div.orders
+    div(v-for="(item, index) in responseData" :key="index")
+      div.ordere
+        div.name
+          span Имя заказчика: {{item.username}}
+        div.adress
+          span Адресс: {{item.adress}}
+        div.numb
+          span Номер телефона: {{item.mobileNumber}}
+        span Заказ:
+        div.items 
+          div(v-for="(item, index) in item.items" :key="index")
+            div.iteme
+              div.name
+                span {{item.name}}
+              div.count
+                span Количество: {{item.count}}
+              div.price
+                span Цена: {{item.price}} руб.
+        div.prices
+          span Общая сумма заказа: {{item.totalprice}} руб.
+
+  div.btn
+    div.add
+      button.addBtn(@click="addItems = !addItems") Добавить новую позицию меню
+    div.del
+      button.delBtn.addBtn(@click="delItems = !delItems") Удалить позицию меню
 
 
 </template>
@@ -75,9 +99,27 @@ export default {
         price: "",
         discription: "",
       },
+      responseData: "",
+      _id: ""
+
     }
 },
 methods: {
+    async getOrders(){
+      try{
+          const response = await fetch("auth/getorders", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this.token}`
+            },
+          });
+          const resJson = await response.json()
+          this.responseData = resJson
+      }catch(e){
+          alert(e)
+      }
+      },
     async addMethod(){
       const response = await fetch("auth/addItems", {
         method: "POST",
@@ -118,6 +160,10 @@ methods: {
         }
     },
 },
+mounted() {
+      this.getOrders()
+      },
+
 computed: {
     ...mapState({
             token: state => state.auth.token
@@ -126,6 +172,59 @@ computed: {
 }
 </script>
 <style>
+.btn{
+  text-align: center;
+}
+.addBtn{
+  margin: 10px 10px 10px 10px;
+  text-align: center;
+  border: none;
+  padding: 0.8vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-radius: 10px;
+  background: #fe785b;
+  color: white;
+  font-size: clamp(19px, 1.2vw, 98px);
+  font-family: "Inter Regular";
+  font-style: normal;
+  font-weight: 600;
+}
+.iteme{
+  margin: 0px 10px 0px 10px;
+  border: none;
+  padding: 0.8vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-radius: 10px;
+  background: #fe785b;
+  color: white;
+  font-family: "Inter Regular";
+  font-style: normal;
+  font-weight: 600;
+}
+.items{
+  display: flex;
+  margin: 1vw;
+  gap: 1vw;
+  align-items: center;
+  text-align: center;
+}
+.ordere{
+  border: solid;
+  padding: 0.8vw;
+  margin: 10px 10px 10px 10px;
+  border-width: 0.5px;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  border-radius: 10px;
+  border-color: #fe785b;
+}
+.orders{
+  justify-content: center;
+  font-family: "Inter Regular";
+  font-size: 1vw;
+}
 .spanTitle{
   display: flex;
   justify-content: center;
@@ -226,7 +325,6 @@ computed: {
   align-items: center;
   font-family: "Inter Regular";
   font-size: 0.9vw;
-  text-align: end;
 }
 .inputStyle{
   font-size: 1.2vw;

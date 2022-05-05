@@ -14,7 +14,10 @@ export const authModule = {
       },
       updateName(state, name){
           state.profileName = name;
-      }
+      },
+      updateRole(state, role){
+        state.profileRole = role;
+    }
     },
     getters: {
       gettoken(state){

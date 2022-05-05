@@ -45,7 +45,7 @@ div.MainFrame
         div
             button.btnMainLogo(@click="this.$router.push('/')") Sakura
         div.buttonGroup
-            button.btnMain(@click="this.$router.push('/admin')") Администратор
+            button.btnMain(@click="this.$router.push('/admin')" v-show="profileRole[0] == 'ADMIN'") Администратор
             div.buttonGroup
                 span.btnMain {{totalPrice}}
                 img(src="@/assets/cart.svg" @click="this.$router.push('/cart')").cartStyle
@@ -108,7 +108,6 @@ export default {
          body: JSON.stringify({
             username: this.auth.login,
             password: this.auth.password,
-            role: this.auth.role
          }),
        })
        if(response.status == 400){
@@ -118,9 +117,11 @@ export default {
        const resJson = await response.json();
           const token = resJson.token    
           const profileName = resJson.profile.profileName
+          const profileRole = resJson.userRoleOut
           this.$store.commit('auth/newToken', token)
           this.$store.commit('auth/authExit', true)
           this.$store.commit('auth/updateName', profileName)
+          this.$store.commit('auth/updateRole', profileRole)
           this.loginIN = !this.loginIN
        }
     },
@@ -130,6 +131,7 @@ export default {
       this.$store.commit('auth/newToken', token)
       this.$store.commit('auth/authExit', false)
       this.$store.commit('auth/updateName', profileName)
+      this.$store.commit('auth/updateRole', '')
     },
     changeMethod(){
      this.a = !this.a
@@ -142,6 +144,7 @@ export default {
             token: state => state.auth.token,
             authed: state => state.auth.authed,
             profileName: state => state.auth.profileName,
+            profileRole: state => state.auth.profileRole,
             arrayObj: state => state.order.arrayObj,
             totalPrice: state => state.order.totalPrice,
     }),
